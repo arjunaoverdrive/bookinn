@@ -5,7 +5,7 @@ spring:
     password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
     hikari:
-      schema: app_schema
+      schema: bookinn_schema
       connection-timeout: 10000
 
   jpa:
