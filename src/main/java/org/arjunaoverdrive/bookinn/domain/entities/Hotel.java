@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "hotel")
@@ -38,6 +41,23 @@ public class Hotel {
 
     @Column(name = "rates_count")
     private Integer ratesCount;
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Room> rooms = new HashSet<>();
+
+    public void addRoom(Room room){
+        this.rooms.add(room);
+        room.setHotel(this);
+    }
+
+    public void addRooms(Collection<Room> newRooms){
+        newRooms.forEach(this::addRoom);
+    }
+
+    public void removeRoom(Room room){
+        this.rooms.remove(room);
+        room.setHotel(null);
+    }
 
     @Override
     public boolean equals(Object o) {
