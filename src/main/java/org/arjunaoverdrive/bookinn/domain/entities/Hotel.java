@@ -22,7 +22,7 @@ public class Hotel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hotel_seq_generator")
-    @SequenceGenerator(name = "hotel_seq_generator", allocationSize = 10)
+    @SequenceGenerator(name = "hotel_seq_generator", sequenceName = "hotel_seq", allocationSize = 10)
     private Long id;
 
     @Column(nullable = false)
