@@ -1,10 +1,12 @@
 package org.arjunaoverdrive.bookinn.service.Impl;
 
-import jakarta.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.arjunaoverdrive.bookinn.domain.entities.Hotel;
 import org.arjunaoverdrive.bookinn.domain.dao.HotelRepository;
+import org.arjunaoverdrive.bookinn.exception.CannotPersistEntityException;
+import org.arjunaoverdrive.bookinn.exception.EntityNotFoundException;
 import org.arjunaoverdrive.bookinn.service.HotelService;
 import org.arjunaoverdrive.bookinn.util.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -51,7 +53,7 @@ public class HotelServiceImpl implements HotelService {
         try {
             hotel = hotelRepository.save(hotel);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            throw new CannotPersistEntityException(e.getMessage());
         }
         return hotel;
     }
