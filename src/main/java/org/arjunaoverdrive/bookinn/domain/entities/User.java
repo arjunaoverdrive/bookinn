@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "app_user")
@@ -31,6 +33,19 @@ public class User {
     private String email;
 
     private RoleType role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Booking> bookings = new HashSet<>();
+
+    public void addBooking(Booking booking){
+        this.bookings.add(booking);
+        booking.setUser(this);
+    }
+
+    public void removeBooking(Booking booking){
+        this.bookings.remove(booking);
+        booking.setUser(null);
+    }
 
 
     @Override

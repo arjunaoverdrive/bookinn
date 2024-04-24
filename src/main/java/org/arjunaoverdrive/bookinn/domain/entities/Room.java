@@ -45,6 +45,19 @@ public class Room {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Booking> bookings = new HashSet<>();
+
+    public void addBooking(Booking booking){
+        this.bookings.add(booking);
+        booking.setRoom(this);
+    }
+
+    public void removeBooking(Booking booking){
+        this.bookings.remove(booking);
+        booking.setRoom(null);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
