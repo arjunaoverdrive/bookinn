@@ -17,6 +17,8 @@ public class HotelResponse {
     private String city;
     private String address;
     private Double downtownDistance;
-    private BigDecimal rating;
-    private Integer ratesCount;
+    @Builder.Default
+    private Double rating = 1.;
+    @Builder.Default
+    private Integer ratesCount = 0;
 }

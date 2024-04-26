@@ -1,5 +1,6 @@
 package org.arjunaoverdrive.bookinn.web.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.arjunaoverdrive.bookinn.domain.mappers.UserMapper;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@Tag(name = "User")
 public class UserController {
 
     private final UserMapper userMapper;

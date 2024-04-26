@@ -1,5 +1,6 @@
 package org.arjunaoverdrive.bookinn.web.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.arjunaoverdrive.bookinn.domain.mappers.RoomMapper;
@@ -8,11 +9,13 @@ import org.arjunaoverdrive.bookinn.web.payload.room.RoomResponse;
 import org.arjunaoverdrive.bookinn.web.payload.room.UpsertRoomRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/rooms")
 @RequiredArgsConstructor
+@Tag(name = "Room")
 public class RoomController {
 
     private final RoomMapper roomMapper;
@@ -24,12 +27,14 @@ public class RoomController {
     }
 
     @PostMapping
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     public ResponseEntity<RoomResponse> createRoom(@RequestBody @Valid UpsertRoomRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).
                 body(roomMapper.toResponse(roomService.createRoom(roomMapper.toRoom(request))));
     }
 
     @PutMapping("/{roomId}")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId,
                                                    @RequestBody @Valid UpsertRoomRequest request){
         return ResponseEntity.ok()
@@ -38,6 +43,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/{roomId}")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteRoomById(@PathVariable Long roomId){
         roomService.deleteById(roomId);
         return ResponseEntity.noContent().build();

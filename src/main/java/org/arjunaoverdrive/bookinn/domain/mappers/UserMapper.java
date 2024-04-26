@@ -4,6 +4,7 @@ import org.arjunaoverdrive.bookinn.domain.entities.User;
 import org.arjunaoverdrive.bookinn.web.payload.user.UpsertUserRequest;
 import org.arjunaoverdrive.bookinn.web.payload.user.UserResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -17,5 +18,6 @@ public interface UserMapper {
         return user;
     }
 
+    @Mapping(target = "role", expression = "java(user.getRole().name())")
     UserResponse toResponse(User user);
 }

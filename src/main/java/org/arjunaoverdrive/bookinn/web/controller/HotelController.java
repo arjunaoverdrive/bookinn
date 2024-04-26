@@ -10,8 +10,11 @@ import org.arjunaoverdrive.bookinn.web.payload.hotel.HotelResponse;
 import org.arjunaoverdrive.bookinn.web.payload.hotel.UpsertHotelRequest;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,27 +27,35 @@ public class HotelController {
     private final HotelService hotelService;
 
     @GetMapping("/{hotelId}")
-    public ResponseEntity<HotelResponse> findById(@PathVariable Long hotelId){
+    public ResponseEntity<HotelResponse> findById(@PathVariable Long hotelId) {
         return ResponseEntity.ok().body(hotelMapper.toResponse(hotelService.findById(hotelId)));
     }
 
     @GetMapping
-    public ResponseEntity<HotelListResponse> findHotels(@ParameterObject Pageable pageable){
+    public ResponseEntity<HotelListResponse> findHotels(@ParameterObject
+                                                        @PageableDefault(sort = "id", direction = Sort.Direction.ASC)
+                                                        Pageable pageable) {
         return ResponseEntity.ok().body(hotelMapper.toListResponse(hotelService.findHotelPage(pageable)));
     }
 
     @PostMapping
-    public ResponseEntity<HotelResponse> createHotel(@RequestBody @Valid UpsertHotelRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(hotelMapper.toResponse(hotelService.create(hotelMapper.toHotel(request))));
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    public ResponseEntity<HotelResponse> createHotel(@RequestBody @Valid UpsertHotelRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(hotelMapper.toResponse(hotelService.create(hotelMapper.toHotel(request))));
     }
 
     @PutMapping("/{hotelId}")
-    public ResponseEntity<HotelResponse> updateHotel(@PathVariable Long hotelId, @RequestBody @Valid UpsertHotelRequest request){
-        return ResponseEntity.ok().body(hotelMapper.toResponse(hotelService.update(hotelMapper.toHotel(hotelId, request))));
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    public ResponseEntity<HotelResponse> updateHotel(@PathVariable Long hotelId,
+                                                     @RequestBody @Valid UpsertHotelRequest request) {
+        return ResponseEntity.ok()
+                .body(hotelMapper.toResponse(hotelService.update(hotelMapper.toHotel(hotelId, request))));
     }
 
     @DeleteMapping("/{hotelId}")
-    public ResponseEntity<Void> deleteHotelById(@PathVariable Long hotelId){
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> deleteHotelById(@PathVariable Long hotelId) {
         hotelService.deleteById(hotelId);
         return ResponseEntity.noContent().build();
     }
