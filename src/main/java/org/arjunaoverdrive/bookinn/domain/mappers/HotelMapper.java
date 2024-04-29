@@ -28,6 +28,7 @@ public interface HotelMapper {
                 .toList()
         );
         response.setTotalPages(hotelsPage.getTotalPages());
+        response.setTotalHotels((int) hotelsPage.getTotalElements());
         return response;
     }
 }

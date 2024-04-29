@@ -5,10 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.arjunaoverdrive.bookinn.domain.mappers.HotelMapper;
 import org.arjunaoverdrive.bookinn.service.HotelService;
-import org.arjunaoverdrive.bookinn.web.payload.hotel.HotelListResponse;
-import org.arjunaoverdrive.bookinn.web.payload.hotel.HotelResponse;
-import org.arjunaoverdrive.bookinn.web.payload.hotel.RatingRequest;
-import org.arjunaoverdrive.bookinn.web.payload.hotel.UpsertHotelRequest;
+import org.arjunaoverdrive.bookinn.web.payload.hotel.*;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,10 +30,11 @@ public class HotelController {
     }
 
     @GetMapping
-    public ResponseEntity<HotelListResponse> findHotels(@ParameterObject
-                                                        @PageableDefault(sort = "id", direction = Sort.Direction.ASC)
+    public ResponseEntity<HotelListResponse> findHotels(
+            @ParameterObject @Valid HotelFilterRequest filter,
+            @ParameterObject @PageableDefault(sort = "id", direction = Sort.Direction.ASC)
                                                         Pageable pageable) {
-        return ResponseEntity.ok().body(hotelMapper.toListResponse(hotelService.findHotelPage(pageable)));
+        return ResponseEntity.ok().body(hotelMapper.toListResponse(hotelService.findHotelPage(filter, pageable)));
     }
 
     @PostMapping

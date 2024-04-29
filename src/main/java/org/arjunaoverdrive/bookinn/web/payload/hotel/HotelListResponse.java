@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 public class HotelListResponse {
     private Integer totalPages;
+    private Integer totalHotels;
     @Builder.Default
     private List<HotelResponse> hotels = new ArrayList<>();
 }

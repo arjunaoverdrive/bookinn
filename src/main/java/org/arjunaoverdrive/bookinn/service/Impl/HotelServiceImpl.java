@@ -3,6 +3,7 @@ package org.arjunaoverdrive.bookinn.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.arjunaoverdrive.bookinn.domain.dao.HotelSpecification;
 import org.arjunaoverdrive.bookinn.domain.entities.Hotel;
 import org.arjunaoverdrive.bookinn.domain.dao.HotelRepository;
 import org.arjunaoverdrive.bookinn.exception.CannotPersistEntityException;
@@ -10,6 +11,7 @@ import org.arjunaoverdrive.bookinn.exception.EntityNotFoundException;
 import org.arjunaoverdrive.bookinn.service.HotelService;
 import org.arjunaoverdrive.bookinn.service.RatingService;
 import org.arjunaoverdrive.bookinn.util.BeanUtils;
+import org.arjunaoverdrive.bookinn.web.payload.hotel.HotelFilterRequest;
 import org.arjunaoverdrive.bookinn.web.payload.hotel.RatingRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,8 +38,8 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Page<Hotel> findHotelPage(Pageable pageable) {
-        return hotelRepository.findAll(pageable);
+    public Page<Hotel> findHotelPage(HotelFilterRequest filter, Pageable pageable) {
+        return hotelRepository.findAll(HotelSpecification.withFilter(filter), pageable);
     }
 
     @Override

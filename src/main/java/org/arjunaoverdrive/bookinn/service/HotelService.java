@@ -1,6 +1,7 @@
 package org.arjunaoverdrive.bookinn.service;
 
 import org.arjunaoverdrive.bookinn.domain.entities.Hotel;
+import org.arjunaoverdrive.bookinn.web.payload.hotel.HotelFilterRequest;
 import org.arjunaoverdrive.bookinn.web.payload.hotel.RatingRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,7 +9,8 @@ import org.springframework.data.domain.Pageable;
 public interface HotelService {
 
     Hotel findById(Long id);
-    Page<Hotel> findHotelPage(Pageable pageable);
+
+    Page<Hotel> findHotelPage(HotelFilterRequest filter, Pageable pageable);
 
     Hotel create(Hotel hotel);
 
