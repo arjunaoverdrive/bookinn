@@ -7,6 +7,7 @@ import org.arjunaoverdrive.bookinn.domain.mappers.HotelMapper;
 import org.arjunaoverdrive.bookinn.service.HotelService;
 import org.arjunaoverdrive.bookinn.web.payload.hotel.HotelListResponse;
 import org.arjunaoverdrive.bookinn.web.payload.hotel.HotelResponse;
+import org.arjunaoverdrive.bookinn.web.payload.hotel.RatingRequest;
 import org.arjunaoverdrive.bookinn.web.payload.hotel.UpsertHotelRequest;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +59,12 @@ public class HotelController {
     public ResponseEntity<Void> deleteHotelById(@PathVariable Long hotelId) {
         hotelService.deleteById(hotelId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{hotelId}/rate")
+    public ResponseEntity<HotelResponse> rateHotel(@PathVariable Long hotelId,
+                                                    @RequestBody @Valid RatingRequest request){
+        return ResponseEntity.ok().body(hotelMapper.toResponse(hotelService.rateHotel(hotelId, request)));
     }
 
 }

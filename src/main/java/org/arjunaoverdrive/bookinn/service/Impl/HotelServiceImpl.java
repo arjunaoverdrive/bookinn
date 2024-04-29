@@ -8,7 +8,9 @@ import org.arjunaoverdrive.bookinn.domain.dao.HotelRepository;
 import org.arjunaoverdrive.bookinn.exception.CannotPersistEntityException;
 import org.arjunaoverdrive.bookinn.exception.EntityNotFoundException;
 import org.arjunaoverdrive.bookinn.service.HotelService;
+import org.arjunaoverdrive.bookinn.service.RatingService;
 import org.arjunaoverdrive.bookinn.util.BeanUtils;
+import org.arjunaoverdrive.bookinn.web.payload.hotel.RatingRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.text.MessageFormat;
 public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
+    private final RatingService ratingService;
 
     @Override
     public Hotel findById(Long id) {
@@ -63,5 +66,12 @@ public class HotelServiceImpl implements HotelService {
         Hotel fromDb = findById(id);
         hotelRepository.delete(fromDb);
         log.info("Deleted hotel {}", fromDb);
+    }
+
+    @Override
+    public Hotel rateHotel(Long hotelId, RatingRequest request) {
+        Hotel fromDb = findById(hotelId);
+        ratingService.updateRating(fromDb, request);
+        return save(fromDb);
     }
 }

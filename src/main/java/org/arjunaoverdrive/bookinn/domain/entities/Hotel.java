@@ -37,10 +37,10 @@ public class Hotel {
     @Column(name = "downtown_distance")
     private Double downtownDistance;
 
-    private BigDecimal rating;
+    private Double rating = 0.;
 
     @Column(name = "rates_count")
-    private Integer ratesCount;
+    private Integer ratesCount = 0;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Room> rooms = new HashSet<>();
