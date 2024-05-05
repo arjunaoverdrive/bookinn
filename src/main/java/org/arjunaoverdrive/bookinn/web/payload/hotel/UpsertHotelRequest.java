@@ -17,6 +17,8 @@ public class UpsertHotelRequest {
     @NotBlank
     private String city;
     @NotBlank
+    private String title;
+    @NotBlank
     private String address;
     @Positive
     private Double downtownDistance;

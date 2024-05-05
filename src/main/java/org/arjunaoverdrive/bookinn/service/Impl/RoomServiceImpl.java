@@ -3,11 +3,15 @@ package org.arjunaoverdrive.bookinn.service.Impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.arjunaoverdrive.bookinn.domain.dao.RoomRepository;
+import org.arjunaoverdrive.bookinn.domain.dao.RoomSpecification;
 import org.arjunaoverdrive.bookinn.domain.entities.Room;
 import org.arjunaoverdrive.bookinn.exception.CannotPersistEntityException;
 import org.arjunaoverdrive.bookinn.exception.EntityNotFoundException;
 import org.arjunaoverdrive.bookinn.service.RoomService;
 import org.arjunaoverdrive.bookinn.util.BeanUtils;
+import org.arjunaoverdrive.bookinn.web.payload.room.RoomFilterRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -52,5 +56,10 @@ public class RoomServiceImpl implements RoomService {
         Room fromDb = findById(id);
         log.info("Deleting room {}", fromDb);
         roomRepository.delete(fromDb);
+    }
+
+    @Override
+    public Page<Room> findRooms(RoomFilterRequest filterRequest, Pageable pageable) {
+        return roomRepository.findAll(RoomSpecification.withFilter(filterRequest), pageable);
     }
 }

@@ -5,9 +5,6 @@ import org.arjunaoverdrive.bookinn.service.RatingService;
 import org.arjunaoverdrive.bookinn.web.payload.hotel.RatingRequest;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 @Service
 public class RatingServiceImpl implements RatingService {
     @Override
