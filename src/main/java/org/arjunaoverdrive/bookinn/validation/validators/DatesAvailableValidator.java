@@ -3,6 +3,7 @@ package org.arjunaoverdrive.bookinn.validation.validators;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
+import org.arjunaoverdrive.bookinn.domain.entities.Booking;
 import org.arjunaoverdrive.bookinn.domain.entities.Room;
 import org.arjunaoverdrive.bookinn.service.RoomService;
 import org.arjunaoverdrive.bookinn.validation.annotations.DatesAvailable;
@@ -24,10 +25,12 @@ public class DatesAvailableValidator implements ConstraintValidator<DatesAvailab
         LocalDate checkinDate = request.getCheckinDate();
         LocalDate checkoutDate = request.getCheckoutDate();
 
-        Set<LocalDate> bookedDates = room.getBookedDates().stream()
-                .filter(ld -> !ld.isBefore(checkinDate) && !ld.isAfter(checkoutDate))
+        Set<Booking> conflictingBookings = room.getBookings()
+                .stream()
+                .filter(booking -> !booking.getCheckinDate().isBefore(checkinDate) &&
+                        !booking.getCheckoutDate().isAfter(checkoutDate))
                 .collect(Collectors.toSet());
 
-        return bookedDates.isEmpty();
+        return conflictingBookings.isEmpty();
     }
 }

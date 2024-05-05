@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -33,19 +31,16 @@ public class Room {
     @Column(nullable = false)
     private String number;
 
-    private BigDecimal price;
+    private Double price;
 
     @Column(nullable = false)
     private Integer capacity;
 
-    @Column(name = "booked_dates")
-    private Set<LocalDate> bookedDates = new HashSet<>();
-
     @ManyToOne
-    @JoinColumn(name = "hotel_id")
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id", nullable = false, updatable = false)
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Booking> bookings = new HashSet<>();
 
     public void addBooking(Booking booking){

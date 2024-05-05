@@ -29,7 +29,7 @@ public interface HotelSpecification {
         return (root, query, builder) -> {
             if(name == null) return null;
 
-            return builder.equal(root.get("name"), name);
+            return builder.like(root.get("name"), "%" + name+ "%");
         };
     }
 
@@ -37,7 +37,7 @@ public interface HotelSpecification {
         return (root, query, builder) -> {
             if(title == null) return null;
 
-            return builder.equal(root.get("title"), title);
+            return builder.like(root.get("title"), "%" + title + "%");
         };
     }
 
@@ -45,7 +45,7 @@ public interface HotelSpecification {
         return (root, query, builder) -> {
             if(address == null) return null;
 
-            return builder.equal(root.get("address"), address);
+            return builder.like(root.get("address"), "%" + address + "%");
         };
     }
 
@@ -69,7 +69,7 @@ public interface HotelSpecification {
         return (root, query, builder) -> {
             if(rating == null) return null;
 
-            return builder.greaterThanOrEqualTo(root.get("rating"), rating);
+            return builder.equal(root.get("rating"), rating);
         };
     }
 
