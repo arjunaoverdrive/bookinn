@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/bookinn_app}
@@ -5,16 +8,29 @@ spring:
     password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
     hikari:
-      schema: app_schema
+      schema: bookinn_schema
       connection-timeout: 10000
 
   jpa:
     hibernate:
-      ddl-auto: "create"
+      ddl-auto: "update"
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/bookinndatabase?authSource=admin
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
 logging:
   level:
     root: INFO
+
+app:
+  kafka:
+    kafkaSignupTopic: "signup-topic"
+    kafkaBookingTopic: "booking-topic"
+    kafkaMessageGroupId: "kafka-message-group-id"
