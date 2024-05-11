@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.arjunaoverdrive.bookinn.web.payload.booking.BookingResponse;
 import org.arjunaoverdrive.bookinn.web.payload.booking.BookingSimpleResponse;
 import org.arjunaoverdrive.bookinn.web.payload.hotel.HotelResponse;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

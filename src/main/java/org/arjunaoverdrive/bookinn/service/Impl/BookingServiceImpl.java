@@ -6,7 +6,9 @@ import org.arjunaoverdrive.bookinn.domain.dao.BookingRepository;
 import org.arjunaoverdrive.bookinn.domain.entities.Booking;
 import org.arjunaoverdrive.bookinn.domain.entities.Room;
 import org.arjunaoverdrive.bookinn.exception.CannotPersistEntityException;
+import org.arjunaoverdrive.bookinn.kafka.message.BookingMessage;
 import org.arjunaoverdrive.bookinn.service.BookingService;
+import org.arjunaoverdrive.bookinn.service.message.EventService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,18 +19,22 @@ import org.springframework.stereotype.Service;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository repository;
+    private final EventService eventService;
 
     @Override
     public Booking create(Booking booking) {
         Room room = booking.getRoom();
         room.addBooking(booking);
-        return save(booking);
+        Booking saved = save(booking);
+        eventService.publishBookingEvent(new BookingMessage(saved.getId(), saved.getUser().getId(),
+                saved.getCheckinDate(), saved.getCheckoutDate()));
+        return saved;
     }
 
-    private Booking save(Booking booking){
-        try{
+    private Booking save(Booking booking) {
+        try {
             booking = repository.save(booking);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new CannotPersistEntityException(e.getMessage());
         }
         return booking;

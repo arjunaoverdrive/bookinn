@@ -6,12 +6,15 @@ import org.arjunaoverdrive.bookinn.domain.dao.UserRepository;
 import org.arjunaoverdrive.bookinn.domain.entities.User;
 import org.arjunaoverdrive.bookinn.exception.CannotPersistEntityException;
 import org.arjunaoverdrive.bookinn.exception.EntityNotFoundException;
+import org.arjunaoverdrive.bookinn.kafka.message.SignupMessage;
 import org.arjunaoverdrive.bookinn.service.UserService;
+import org.arjunaoverdrive.bookinn.service.message.EventService;
 import org.arjunaoverdrive.bookinn.util.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 
@@ -22,6 +25,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EventService eventService;
 
     @Override
     public User findById(Long id) {
@@ -44,8 +48,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User createUser(User user) {
-        return save(user);
+        User saved = save(user);
+        eventService.publishSignupEvent(new SignupMessage(saved.getId()));
+        return saved;
     }
 
     @Override

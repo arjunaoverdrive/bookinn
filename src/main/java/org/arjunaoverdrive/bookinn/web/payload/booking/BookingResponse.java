@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.arjunaoverdrive.bookinn.web.payload.room.RoomResponse;
 import org.arjunaoverdrive.bookinn.web.payload.room.RoomSimpleResponse;
 import org.arjunaoverdrive.bookinn.web.payload.user.UserResponse;
 

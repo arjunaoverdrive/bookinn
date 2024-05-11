@@ -1,6 +1,7 @@
 package org.arjunaoverdrive.bookinn.web.payload.booking;
 
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 @DatesAvailable
 public class UpsertBookingRequest {
 
-    @Future
+    @FutureOrPresent
     @NotNull
     private LocalDate checkinDate;
     @NotNull
